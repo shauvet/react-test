@@ -9,27 +9,48 @@
 </head>
 <body>
 <div id="test"></div>
+<div id="test1"></div>
 <script type="text/babel">
-    var LikeButton = React.createClass({
+//    var LikeButton = React.createClass({
+//        getInitialState: function() {
+//            return {liked: false};
+//        },
+//        handleClick: function(event) {
+//            this.setState({liked: !this.state.liked});
+//        },
+//        render: function() {
+//            var text = this.state.liked ? '喜欢' : '不喜欢';
+//            return (
+//                <p onClick={this.handleClick}>
+//                    你 {text} 这个. 点击就可以切换.
+//                </p>
+//            );
+//        }
+//    });
+
+    var Input = React.createClass({
         getInitialState: function() {
-            return {liked: false};
+            return {value: 'Hello!'};
         },
-        handleClick: function(event) {
-            this.setState({liked: !this.state.liked});
+        handleChange: function(event) {
+            this.setState({value: event.target.value});
         },
         render: function() {
-            var text = this.state.liked ? '喜欢' : '不喜欢';
+            var value = this.state.value;
             return (
-                <p onClick={this.handleClick}>
-                    你 {text} 这个. 点击就可以切换.
-                </p>
+                <div>
+                    <input type="text" value={value} onChange={this.handleChange} />
+                    <p>{value}</p>
+                </div>
             );
         }
     });
 
     ReactDOM.render(
-            <LikeButton />,
-            document.getElementById('test')
+//            <LikeButton />,
+            <Input />,
+//            document.getElementById('test'),
+            document.getElementById('test1')
     );
 </script>
 </body>
