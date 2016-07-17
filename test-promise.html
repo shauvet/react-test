@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="build/react.min.js"></script>
+    <script src="build/react-dom.min.js"></script>
+    <script src="build/browser.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<div id="test"></div>
+<script type="text/babel">
+var RepoList = React.createClass({
+    getInitialState: function() {
+        return {
+            loading: true,
+            error: null,
+            data: null
+        };
+    },
+
+    componentDidMount() {
+        this.props.promise.then(
+                value => this.setState({
+            loading: false, data: value
+        }),
+                error => this.setState({
+            loading: false, error: error
+        })
+        );
+    },
+
+    render: function() {
+        if (this.state.loading) {
+            return <span>loading</span>
+        }
+        else if (this.state.error !== null) {
+            return <span>Error: {this.state.error.message}</span>
+        }
+        else {
+            var repos = this.state.data.items;
+            var repoList = repos.map(function(repo) {
+                return (
+                        <li>
+                            <a href={repo.html_url}>{repo.name}</a>
+                ({repo.stargazers_count} stars) <br />
+                {repo.description}
+                        </li>
+                );
+            });
+            return (
+                    <main>
+                        <h1>Most Popular javascript Projects in Github</h1>
+                    <ol>{repoList}</ol>
+                    </main>
+            )
+        }
+    }
+});
+
+    ReactDOM.render(
+            <RepoList promise={$.getJSON('https://api.github.com/search/repositories?q=javascript&sort=stars')} />,
+document.getElementById('test')
+    )
+</script>
+</body>
+</html>
